@@ -1,9 +1,12 @@
 import cv2
 from cvzone.HandTrackingModule import HandDetector
+from time import sleep
 
 cap = cv2.VideoCapture(0)   #0 is webcam id
 cap.set(3, 1280)    #3-width map, 1280 width
 cap.set(4, 720)     #4-height map, 720 height
+
+finalText = ""
 
 detector = HandDetector(detectionCon=0.8)   #only detect hand if confidence is at least 80%
 keys = [["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -54,6 +57,11 @@ while True:
                     if length<40:
                         cv2.rectangle(img, button.pos, (x+w, y+h), (0, 255, 0), cv2.FILLED)
                         cv2.putText(img, button.text, (x+20, y+65), cv2.FONT_HERSHEY_PLAIN, 4, (255, 255, 255), 4)
+                        finalText += button.text
+                        sleep(0.15)
+
+    cv2.rectangle(img, (50, 350), (700, 450), (175, 0, 175), cv2.FILLED)
+    cv2.putText(img, finalText, (60, 430), cv2.FONT_HERSHEY_PLAIN, 5, (255, 255, 255), 5)
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)  #1ms  
